@@ -1,13 +1,19 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
+  BarChart,
   BookOpenCheck,
+  Clapperboard,
   Heart,
   Key,
+  ListChecks,
   LucideIcon,
   ShoppingCart,
   UserSquare2,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 type RouteItems = {
@@ -16,7 +22,9 @@ type RouteItems = {
   route: string;
 };
 
-const routes: RouteItems[] = [
+let routes: RouteItems[];
+
+const homeRoutes = [
   //   {
   //     route: "/user",
   //     label: "My Profile",
@@ -44,7 +52,60 @@ const routes: RouteItems[] = [
   },
 ];
 
+const userRoutes = [
+  {
+    route: "/user/learning",
+    label: "My Learning",
+    icon: BookOpenCheck,
+  },
+  {
+    route: "/user/wishlist",
+    label: "Wishlist",
+    icon: Heart,
+  },
+  {
+    route: "/user/cart",
+    label: "Cart",
+    icon: ShoppingCart,
+  },
+  {
+    route: "/user/cart",
+    label: "Teach On Udemy",
+    icon: Clapperboard,
+  },
+];
+
+const teacherRoutes = [
+  {
+    icon: ListChecks,
+    label: "Courses",
+    route: "/teacher/courses",
+  },
+  {
+    icon: BarChart,
+    label: "Analytics",
+    route: "/teacher/analytics",
+  },
+  {
+    icon: BarChart,
+    label: "Analytics",
+    route: "/teacher/create",
+  },
+];
+
 const MobileRoutes = () => {
+  const pathname = usePathname();
+
+  if (pathname === "/") {
+    routes = homeRoutes;
+  }
+  if (pathname.includes("user")) {
+    routes = userRoutes;
+  }
+  if (pathname.includes("teacher")) {
+    routes = teacherRoutes;
+  }
+
   return (
     <>
       <ul className="pt-8 pb-4 text-left">
@@ -61,7 +122,6 @@ const MobileRoutes = () => {
         <Key className="mr-2 h-4 w-4" /> Login
       </Button>
     </>
-
   );
 };
 

@@ -8,15 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Menu,
-  UserSquare2,
-  BookOpenCheck,
-  Heart,
-  ShoppingCart,
-  LogOut,
-  Key,
-} from "lucide-react";
+import { Menu } from "lucide-react";
 import MobileRoutes from "../MobileNavRoutes/MobileRoutes";
 
 const MobileMenu = () => {

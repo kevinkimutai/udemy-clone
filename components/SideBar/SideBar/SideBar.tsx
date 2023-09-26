@@ -16,7 +16,7 @@ import {
   LucideIcon,
   ShoppingCart,
 } from "lucide-react";
-import ImageLogo from "../../public/images/Udemy_logo.svg.png";
+import ImageLogo from "../../../public/images/Udemy_logo.svg.png";
 
 type RouteItems = {
   icon: LucideIcon;
@@ -60,6 +60,11 @@ const teacherRoutes = [
     label: "Analytics",
     route: "/teacher/analytics",
   },
+  {
+    icon: BarChart,
+    label: "Analytics",
+    route: "/teacher/create",
+  },
 ];
 
 const SideBar = () => {
@@ -76,13 +81,13 @@ const SideBar = () => {
   console.log(pathname);
 
   return (
-    <aside className="fixed top-0 bottom-0 shadow-lg w-1/5 bg-purple-100 py-4 justify-start ">
-      <Image src={ImageLogo} alt="home" className="w-16 px-5 object-contain" />
+    <aside className="hidden md:block fixed top-0 bottom-0 shadow-lg w-1/5 bg-purple-100 py-4 justify-start ">
+      <Image src={ImageLogo} alt="home" className="w-32 px-5 object-contain" />
       <ul className="pt-12">
         {sideBarRoutes.map(({ route, label, icon: Icon }) => (
           <li
             key={label}
-            className={`flex p-4 justify-start items-center ${
+            className={`flex px-4 py-2 justify-start items-center ${
               pathname === route
                 ? "bg-white border-r-4 border-r-purple-600 shadow-sm"
                 : ""
