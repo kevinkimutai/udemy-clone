@@ -51,7 +51,7 @@ const MobileRoutes = () => {
         {routes.map(({ route, label, icon: Icon }: RouteItems) => (
           <li key={label} className="mb-4">
             <Link href={route} className="flex items-center">
-              <Icon className=" text-md mr-5" />
+              <Icon className="text-sm mr-5" />
               {label}
             </Link>
           </li>
@@ -62,16 +62,6 @@ const MobileRoutes = () => {
       </Button>
     </>
 
-    // <ul>
-    //   {routes.map(({ route, label, icon: Icon }) => {
-    //     <li key={label}>
-    //       <Link href={route}>
-    //         <Icon />
-    //         {label}
-    //       </Link>
-    //     </li>;
-    //   })}
-    // </ul>
   );
 };
 
