@@ -81,7 +81,7 @@ const SideBar = () => {
   console.log(pathname);
 
   return (
-    <aside className="hidden md:block fixed top-0 bottom-0 shadow-lg w-1/5 bg-purple-100 py-4 justify-start ">
+    <aside className="hidden md:block fixed top-0 bottom-0 shadow-lg w-1/5 py-4 justify-start bg-gradient-to-b from-purple-50 via-purple-300 to-purple-400">
       <Image src={ImageLogo} alt="home" className="w-32 px-5 object-contain" />
       <ul className="pt-12">
         {sideBarRoutes.map(({ route, label, icon: Icon }) => (
@@ -89,7 +89,7 @@ const SideBar = () => {
             key={label}
             className={`flex px-4 py-2 justify-start items-center ${
               pathname === route
-                ? "bg-white border-r-4 border-r-purple-600 shadow-sm"
+                ? "bg-purple-600 text-white border-r-4 border-r-slate-500 shadow-sm"
                 : ""
             }`}
           >

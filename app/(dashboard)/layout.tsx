@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <body className="w-full flex justify-start items-start">
       <SideBar />
-      <nav className=" fixed w-full md:w-4/5 right-0 top-0 flex justify-between md:justify-end items-center px-8 py-2 shadow-sm">
+      <nav className=" fixed w-full md:w-4/5 right-0 top-0 flex justify-between md:justify-end items-center px-8 py-2 shadow-sm bg-purple-50 z-20">
         <div className="flex justify-center items-center md:hidden">
           <MobileMenu />
           <Image
