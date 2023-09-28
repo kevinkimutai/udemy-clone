@@ -12,9 +12,19 @@ import {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  header?: {
+    title: string;
+    desc: string;
+  };
+  children: React.ReactNode;
 }
 
-export default function Modal({ isOpen, onClose }: ModalProps) {
+export default function Modal({
+  isOpen,
+  onClose,
+  header,
+  children,
+}: ModalProps) {
   return (
     <Dialog open={isOpen}>
       {/* <DialogTrigger asChild>
@@ -22,15 +32,10 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       </DialogTrigger> */}
       <DialogContent className="w-[40vw]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when youre done.
-          </DialogDescription>
+          <DialogTitle>{header?.title}</DialogTitle>
+          <DialogDescription>{header?.desc}</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4" />
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        {children}
       </DialogContent>
     </Dialog>
   );

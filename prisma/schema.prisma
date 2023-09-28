@@ -23,9 +23,11 @@ model Course {
   teacherId String
   usersId String
 
-  categoryId String 
+  categoryId String @unique
   category  Category @relation(fields: [categoryId],references: [id])
 
+  subCategoryId String @unique
+  subCategory  SubCategory @relation(fields: [subCategoryId], references: [id])
 
   attachment Attachment[]
 
@@ -40,6 +42,18 @@ model Category{
   name String @db.Text 
 
   courses Course[]
+  subCategories SubCategory[]
+}
+
+
+model SubCategory{
+  id String @id @default(uuid())
+  title String @db.Text
+
+  categoryId String @unique
+  category Category @relation(fields:[categoryId],references: [id])
+
+  course Course?
 }
 
 model Attachment {
@@ -55,6 +69,5 @@ model Attachment {
   updatedAt DateTime @updatedAt
 
   @@index([courseId])
-
 
 }
