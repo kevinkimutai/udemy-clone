@@ -35,7 +35,7 @@ export default function Modal({
           <DialogTitle>{header?.title}</DialogTitle>
           <DialogDescription>{header?.desc}</DialogDescription>
         </DialogHeader>
-        {children}
+        <div className="w-full max-h-[60vh] overflow-y-scroll">{children}</div>
       </DialogContent>
     </Dialog>
   );

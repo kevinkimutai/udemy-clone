@@ -6,8 +6,6 @@ import * as z from "zod";
 import TitleForm from "../Input/TitleForm";
 import { Course } from "@prisma/client";
 import CategoryForm from "../Input/CategoryForm";
-import Category from "../Input/Category";
-
 enum STEPS {
   DESC = 0,
   CATEGORY = 1,
@@ -55,7 +53,7 @@ const CourseModal = ({ isOpen, onClose }: ModalProps) => {
       title: "Categories",
       desc: "We Offer All Types Of Categories",
     };
-    FormComponent = <Category onBack={onBack} submitForm={handleSubmit} />;
+    FormComponent = <CategoryForm onBack={onBack} submitForm={handleSubmit} />;
   }
 
   return (
