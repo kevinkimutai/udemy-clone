@@ -9,7 +9,11 @@ export async function GET(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const course = await db.category.findMany();
+    const course = await db.category.findMany({
+      include: {
+        subCategories: true,
+      },
+    });
 
     return NextResponse.json(course);
   } catch (error) {

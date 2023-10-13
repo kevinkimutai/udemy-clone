@@ -23,18 +23,19 @@ model Course {
   teacherId String
   usersId String
 
-  categoryId String @unique
+  categoryId String 
   category  Category @relation(fields: [categoryId],references: [id])
 
-  subCategoryId String @unique
+  subCategoryId String
   subCategory  SubCategory @relation(fields: [subCategoryId], references: [id])
 
-  attachment Attachment[]
+  chapterId Chapter[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
+  @@index([subCategoryId])
 }
 
 model Category{
@@ -50,24 +51,63 @@ model SubCategory{
   id String @id @default(uuid())
   title String @db.Text
 
-  categoryId String @unique
+  categoryId String 
   category Category @relation(fields:[categoryId],references: [id])
 
-  course Course?
+  course Course[]
+
+
+  @@index([categoryId])
 }
 
-model Attachment {
+
+model Chapter {
   id String @id @default(uuid())
   name String
-  url String @db.Text
+  number Int @db.Int
 
 
-  courseId String
+  courseId String @unique
   course  Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
+
+  topicId String @unique
+  topic  Topic @relation(fields: [topicId],references: [id],onDelete: Cascade)
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([courseId])
 
+
 }
+
+model Topic{
+  id String @id @default(uuid())
+  name String
+  number Int
+
+  chapter Chapter?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([id])
+
+}
+
+// model Attachment {
+//   id String @id @default(uuid())
+//   name String
+//   url String @db.Text
+
+
+//   courseId String
+//   course  Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([courseId])
+
+// }
