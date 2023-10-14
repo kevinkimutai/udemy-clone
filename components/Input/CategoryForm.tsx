@@ -31,29 +31,11 @@ type CategoryWithSubCategories = Category & {
   subCategories: SubCategory[];
 };
 
-// const formSchema = z.object({
-//   category: z.string(),
-//   subcategory: z.string(),
-//   // description: z.string().min(60, {
-//   //   message: "Title must be at least 20 characters.",
-//   // }),
-// });
-
 const CategoryForm = ({ submitForm, onBack }: CategoryProps) => {
   const [categories, setCategories] = useState<CategoryWithSubCategories[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [catData, setCatData] = useState<CategoryWithSubCategories>();
-
-  // // 1. Define your form.
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     category: "",
-  //     subcategory: "",
-  //   },
-  // });
-
-  // ...
+  const [selectedSubCat, setSelectedSubCat] = useState<SubCategory>();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -68,7 +50,19 @@ const CategoryForm = ({ submitForm, onBack }: CategoryProps) => {
     fetchCategories();
   }, []);
 
-  const submitHandler = () => {};
+  const submitHandler = () => {
+    if (!catData || !selectedSubCat) return;
+
+    console.log("CATDATA", catData, "SUBCAT", selectedSubCat);
+
+    let data = { categoryId: catData.id, subcategoryId: selectedSubCat };
+    submitForm(data);
+  };
+
+  const selectedItem = catData?.subCategories.find(
+    //@ts-ignore
+    (sub) => sub.id === selectedSubCat
+  );
 
   return (
     <>
@@ -107,14 +101,24 @@ const CategoryForm = ({ submitForm, onBack }: CategoryProps) => {
         {!catData ? null : (
           <div className="flex flex-col space-y-1.5 mt-5">
             <Label htmlFor="subcat">Choose Sub-Category</Label>
-            <Select>
+            <Select
+              onValueChange={(val: any) => {
+                setSelectedSubCat(val);
+              }}
+            >
               <SelectTrigger id="subcat">
-                <SelectValue placeholder="Select" />
+                <SelectValue placeholder="Select">
+                  {selectedSubCat ? (
+                    <span>{selectedItem?.title}</span>
+                  ) : (
+                    <span style={{ color: "gray" }}>Select a value</span>
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent position="popper">
                 {catData!.subCategories.map((subcat) => (
                   <>
-                    <SelectItem value="next" id={subcat.id}>
+                    <SelectItem value={subcat.id} id={subcat.id}>
                       {subcat.title}
                     </SelectItem>
                   </>

@@ -6,6 +6,8 @@ import * as z from "zod";
 import TitleForm from "../Input/TitleForm";
 import { Course } from "@prisma/client";
 import CategoryForm from "../Input/CategoryForm";
+import PriceForm from "../Input/PriceForm";
+import CourseImageForm from "../Input/CourseImageInputForm";
 enum STEPS {
   DESC = 0,
   CATEGORY = 1,
@@ -54,6 +56,22 @@ const CourseModal = ({ isOpen, onClose }: ModalProps) => {
       desc: "We Offer All Types Of Categories",
     };
     FormComponent = <CategoryForm onBack={onBack} submitForm={handleSubmit} />;
+  }
+  if (step === STEPS.PRICE) {
+    header = {
+      title: "Price",
+      desc: "Set The Price For Your Course",
+    };
+    FormComponent = <PriceForm onBack={onBack} submitForm={handleSubmit} />;
+  }
+  if (step === STEPS.IMAGEURL) {
+    header = {
+      title: "Course Banner",
+      desc: "The Course Banner.",
+    };
+    FormComponent = (
+      <CourseImageForm onBack={onBack} submitForm={handleSubmit} />
+    );
   }
 
   return (

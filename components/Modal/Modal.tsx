@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 import {
   Dialog,
   DialogContent,
@@ -35,7 +37,7 @@ export default function Modal({
           <DialogTitle>{header?.title}</DialogTitle>
           <DialogDescription>{header?.desc}</DialogDescription>
         </DialogHeader>
-        <div className="w-full max-h-[60vh]">{children}</div>
+        <ScrollArea className="w-full h-[60vh]">{children}</ScrollArea>
       </DialogContent>
     </Dialog>
   );
