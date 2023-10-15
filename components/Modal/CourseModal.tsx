@@ -13,7 +13,6 @@ enum STEPS {
   CATEGORY = 1,
   PRICE = 2,
   IMAGEURL = 3,
-  ATTACHMENT = 4,
 }
 
 interface ModalProps {
@@ -70,7 +69,11 @@ const CourseModal = ({ isOpen, onClose }: ModalProps) => {
       desc: "The Course Banner.",
     };
     FormComponent = (
-      <CourseImageForm onBack={onBack} submitForm={handleSubmit} />
+      <CourseImageForm
+        onBack={onBack}
+        submitForm={handleSubmit}
+        formData={formData}
+      />
     );
   }
 
