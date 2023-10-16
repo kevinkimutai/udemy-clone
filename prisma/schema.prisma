@@ -67,11 +67,11 @@ model Chapter {
   number Int @db.Int
 
 
-  courseId String @unique
+  courseId String 
   course  Course @relation(fields: [courseId],references: [id],onDelete: Cascade)
 
-  topicId String @unique
-  topic  Topic @relation(fields: [topicId],references: [id],onDelete: Cascade)
+  topicId String? @unique
+  topic  Topic[] 
 
 
   createdAt DateTime @default(now())
@@ -87,14 +87,18 @@ model Topic{
   name String
   number Int
   videoUrl String
+  isFree Boolean @default(false)
 
-  chapter Chapter?
+  chapterId String 
+  chapter  Chapter @relation(fields: [chapterId],references: [id],onDelete: Cascade)
+
   attachment Attachment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([id])
+  @@index([chapterId])
 
 }
 

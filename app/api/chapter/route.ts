@@ -10,30 +10,21 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized,Please Login", { status: 401 });
     }
 
-    const { title, description, imageUrl, price, categoryId, subcategoryId } =
-      await req.json();
+    const { courseId, name, number } = await req.json();
 
-    const newCourse = await db.course.create({
+    const newChapter = await db.chapter.create({
       data: {
-        title,
-        description,
-        imageUrl,
-        price,
-        teacherId: userId!,
-        category: {
+        name,
+        number,
+        course: {
           connect: {
-            id: categoryId,
-          },
-        },
-        subCategory: {
-          connect: {
-            id: subcategoryId,
+            id: courseId,
           },
         },
       },
     });
 
-    return NextResponse.json(newCourse);
+    return NextResponse.json(newChapter);
   } catch (error) {
     console.log("[COURSE POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
