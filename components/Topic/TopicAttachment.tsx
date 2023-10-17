@@ -63,7 +63,7 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
     // Upload file and metadata to the object 'images/mountains.jpg'
     const storageRef = ref(
       storage,
-      "course-videos/" + file.name + Date.now().toString()
+      "topic-attachments/" + file.name + Date.now().toString()
     );
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
@@ -131,7 +131,7 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
     if (!uploadURL) {
       return;
     }
-    let attachment = { name: data.name, url: uploadURL };
+    let attachment = { attachment: { name: data.name, url: uploadURL } };
 
     submitForm(attachment);
   };
@@ -155,7 +155,7 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Topic Video" {...field} />
+                        <Input placeholder="Attachment Name" {...field} />
                       </FormControl>
 
                       <FormMessage />
@@ -164,12 +164,17 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
                 />
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>File Attachment</FormLabel>
                       <FormControl>
-                        <Input placeholder="Topic Video" {...field} />
+                        <Input
+                          placeholder="Attachment File"
+                          type={"file"}
+                          onChange={videoChangeHandler}
+                          // {...field}
+                        />
                       </FormControl>
 
                       <FormMessage />
@@ -177,12 +182,12 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
                   )}
                 />
 
-                {/* <div className="flex gap-4 mt-8">
+                <div className="flex gap-4 mt-8">
                   <Button variant={"outline"} onClick={onBack}>
                     Back
                   </Button>
                   <Button type="submit">Next</Button>
-                </div> */}
+                </div>
               </form>
             </Form>
           }

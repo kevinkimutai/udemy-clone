@@ -31,15 +31,17 @@ const formSchema = z.object({
   isFree: z.string(),
 });
 
-const TopicFreeForm = () => {
+type ComponentProps = {
+  submitForm: (data: any) => void;
+};
+
+const TopicFreeForm = ({ submitForm }: ComponentProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       isFree: "false",
     },
   });
-
-  const submitForm = (data: any) => {};
 
   return (
     <Form {...form}>

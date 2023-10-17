@@ -62,7 +62,7 @@ const TopicInput = ({ submitForm }: FormProps) => {
           name="number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Topic Number</FormLabel>
               <FormControl>
                 <Input placeholder="Topic Number" type={"number"} {...field} />
               </FormControl>

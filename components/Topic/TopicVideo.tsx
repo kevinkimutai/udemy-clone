@@ -143,7 +143,7 @@ const TopicVideo = ({ onBack, submitForm }: FormProps) => {
           {!uploadURL ? (
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(submitForm)}
+                onSubmit={form.handleSubmit(submitHandler)}
                 className="space-y-8"
               >
                 <FormField
@@ -186,7 +186,7 @@ const TopicVideo = ({ onBack, submitForm }: FormProps) => {
                 <Button variant={"outline"} onClick={onBack}>
                   Back
                 </Button>
-                <Button type="submit" onClick={submitForm}>
+                <Button type="submit" onClick={submitHandler}>
                   Next
                 </Button>
               </div>

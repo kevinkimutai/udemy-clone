@@ -11,6 +11,8 @@ import {
 import { Topic } from "@prisma/client";
 import { Pencil, Trash } from "lucide-react";
 
+import { formatDate } from "../../utils/formatDate";
+
 type ComponentProps = {
   topics: Topic[];
 };
@@ -23,9 +25,10 @@ const TopicTable = ({ topics }: ComponentProps) => {
         <TableRow>
           <TableHead className="">Id</TableHead>
           <TableHead>Topic Number</TableHead>
+          <TableHead>Title</TableHead>
           <TableHead>Is Free?</TableHead>
           <TableHead>Created At</TableHead>
-          <TableHead className="text-right"></TableHead>
+          <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -35,13 +38,14 @@ const TopicTable = ({ topics }: ComponentProps) => {
               <TableCell className="font-medium">
                 {topic.id.slice(0, 6) + "..."}
               </TableCell>
-              <TableCell>{topic.name}</TableCell>
               <TableCell>{topic.number}</TableCell>
-              <TableCell>{topic.isFree}</TableCell>
+              <TableCell>{topic.name}</TableCell>
+              <TableCell>{topic.isFree === true ? "Yes" : "No"}</TableCell>
+              <TableCell>{formatDate(topic.createdAt)}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-center items-center gap-4">
-                  <Pencil size={15} />
-                  <Trash size={15} />
+                  <Pencil size={15} className="cursor-pointer" />
+                  <Trash size={15} className="cursor-pointer" />
                 </div>
               </TableCell>
             </TableRow>

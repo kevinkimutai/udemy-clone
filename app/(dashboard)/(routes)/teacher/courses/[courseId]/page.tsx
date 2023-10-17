@@ -19,7 +19,7 @@ type CourseWithCategories = Course & {
 };
 
 type ChapterWithTopics = Chapter & {
-  topics: Topic[];
+  topic: Topic[];
 };
 
 const page = async ({ params }: { params: ParamsPage }) => {

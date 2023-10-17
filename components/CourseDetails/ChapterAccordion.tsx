@@ -15,23 +15,26 @@ import CourseTopicModal from "../Modal/CourseTopicModal";
 
 type ChapterProps = {
   chapter?: Chapter & {
-    topics: Topic[];
+    topic: Topic[];
   };
 };
 
 const ChapterAccordion = ({ chapter }: ChapterProps) => {
   const { isOpen, onOpen, onClose } = useTopicModal();
 
+  console.log(chapter);
+
   return (
     <>
-      <div className="px-4">
-        <Accordion type="single" collapsible>
+      <div className="px-4 mb-4">
+        <Accordion type="single" collapsible className="">
           <AccordionItem value="item-1" defaultChecked>
-            <AccordionTrigger>{chapter?.name}</AccordionTrigger>
+            <AccordionTrigger className="font-semibold text-lg">
+              {chapter?.number}.{"   "}
+              {chapter?.name}
+            </AccordionTrigger>
             <AccordionContent>
-              {!chapter?.topics ? null : (
-                <TopicTable topics={chapter!.topics} />
-              )}
+              {!chapter?.topic ? null : <TopicTable topics={chapter!.topic} />}
               <div className="flex justify-end items-end">
                 <Button
                   onClick={() => {
@@ -46,7 +49,13 @@ const ChapterAccordion = ({ chapter }: ChapterProps) => {
         </Accordion>
       </div>
 
-      {isOpen && <CourseTopicModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && (
+        <CourseTopicModal
+          isOpen={isOpen}
+          onClose={onClose}
+          chapterId={chapter!.id}
+        />
+      )}
     </>
   );
 };

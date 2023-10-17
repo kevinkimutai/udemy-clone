@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Modal from "./Modal";
 import * as z from "zod";
 import TitleForm from "../Input/TitleForm";
@@ -22,22 +23,54 @@ enum STEPS {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  chapterId: string;
 }
 
-const CourseTopicModal = ({ isOpen, onClose }: ModalProps) => {
+const CourseTopicModal = ({ isOpen, onClose, chapterId }: ModalProps) => {
   const [step, setStep] = useState<STEPS>(STEPS.NAME);
+  const router = useRouter();
   const [formData, setFormData] = useState<
     Topic & {
       attachment: Attachment;
     }
   >();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
     if (step === STEPS.ISFREE) {
       //submit
+      setFormData((prev) => ({ ...prev, ...data }));
+      console.log("FORM", data);
 
-      console.log("FORM", formData);
+      let bool;
+      //@ts-ignore
+      if (formData?.isFree === "true") {
+        bool = true;
+      } else {
+        bool = false;
+      }
+      let topicData = {
+        ...formData,
+        number: +formData!.number,
+        isFree: bool,
+        chapterId,
+      };
+
+      const res = await fetch("/api/topic", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(topicData),
+      });
+
+      if (res.ok) {
+        onClose();
+        router.refresh();
+      }
+
+      //TODO:ADD TOAST NOTIFICATIONS
     } else {
+      console.log("FORM", data);
       setStep((prevState) => prevState + 1);
       setFormData((prev) => ({ ...prev, ...data }));
     }
@@ -83,7 +116,7 @@ const CourseTopicModal = ({ isOpen, onClose }: ModalProps) => {
       title: "Is This Topic Free",
       desc: "Give A Sneak Peak To Your Potential Users",
     };
-    TopicComponent = <TopicFreeForm />;
+    TopicComponent = <TopicFreeForm submitForm={handleSubmit} />;
   }
 
   return (
