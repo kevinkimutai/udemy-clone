@@ -16,6 +16,7 @@ export default async function getCourseById(params: IParams) {
       include: {
         category: true,
         subCategory: true,
+        chapters: true,
       },
     });
 
