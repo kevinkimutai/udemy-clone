@@ -30,8 +30,7 @@ const ChapterAccordion = ({ chapter }: ChapterProps) => {
         <Accordion type="single" collapsible className="">
           <AccordionItem value="item-1" defaultChecked>
             <AccordionTrigger className="font-semibold text-lg">
-              {chapter?.number}.{"   "}
-              {chapter?.name}
+              {chapter?.number}.{chapter?.name}
             </AccordionTrigger>
             <AccordionContent>
               {!chapter?.topic ? null : <TopicTable topics={chapter!.topic} />}

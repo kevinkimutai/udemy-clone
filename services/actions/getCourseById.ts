@@ -5,7 +5,6 @@ type IParams = {
 };
 
 export default async function getCourseById(params: IParams) {
-  console.log("PARAMS", params);
   try {
     const { courseId } = params;
 

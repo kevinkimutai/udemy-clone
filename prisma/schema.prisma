@@ -21,7 +21,7 @@ model Course {
   isPublished Boolean @default(false)
 
   teacherId String
-  usersId String?
+  users User[]
 
   categoryId String 
   category  Category @relation(fields: [categoryId],references: [id])
@@ -116,4 +116,13 @@ model Attachment {
 
   @@index([topicId])
 
+}
+model User{
+  id String @id @default(uuid())
+  userId String @unique
+
+  courseId String 
+  course Course @relation(fields:[courseId],references: [id])
+
+  @@index([courseId])
 }

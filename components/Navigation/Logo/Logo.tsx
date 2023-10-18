@@ -7,12 +7,12 @@ import MobileMenu from "../MobileMenu/MobileMenu";
 const Logo = () => {
   return (
     <div className="flex items-center justify-center">
-      <MobileMenu />
       <Image
         src={LogoImage}
         alt="Logo"
         className="w-28 hidden md:block object-contain"
       />
+      <MobileMenu />
     </div>
   );
 };
