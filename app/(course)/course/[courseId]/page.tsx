@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import CourseMediaPlayer from "@/components/MediaPlayer/CourseMediaPlayer";
 import { Category, Chapter, Course, SubCategory, Topic } from "@prisma/client";
 import getCourseById from "@/services/actions/getCourseById";
@@ -26,16 +27,26 @@ type CourseWithCategories = Course & {
 const Page = ({ params }: { params: ParamsPage }) => {
   const [course, setCourse] = useState<CourseWithCategories>();
   const [videoUrl, setVideoUrl] = useState<string>();
+  const router = useRouter();
+
+  const checkout = async () => {
+    const res = await fetch(`/api/course/${course?.id}/checkout`);
+
+    if (res.ok) {
+      const data = await res.json();
+
+      router.push(data.url);
+    }
+  };
 
   useEffect(() => {
     const fetchCourse = async () => {
       //@ts-ignore
-      const res = await fetch(`/api/course/${params}`);
+      const res = await fetch(`/api/course/${params.courseId}`);
 
       if (res.ok) {
-        const data = res.json();
+        const data = await res.json();
 
-        //@ts-ignore
         setCourse(data);
         //@ts-ignore
         setVideoUrl(data.chapters[0].topic[0].videoUrl);
@@ -44,7 +55,6 @@ const Page = ({ params }: { params: ParamsPage }) => {
     fetchCourse();
   }, [params]);
 
-  console.log(course);
   return (
     <>
       {!course ? (
@@ -98,7 +108,9 @@ const Page = ({ params }: { params: ParamsPage }) => {
             </div>
             <div className="p-4 w-1/2">
               <div className="flex justify-end gap-4 ">
-                <Button type="submit">Enroll Now</Button>
+                <Button type="submit" onClick={checkout}>
+                  Enroll Now @{course.price}
+                </Button>
               </div>
             </div>
           </div>

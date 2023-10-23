@@ -25,7 +25,7 @@ export async function GET(
     console.log(course);
     return NextResponse.json(course);
   } catch (error) {
-    console.log("[COURSE POST]", error);
+    console.log("[COURSEID POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

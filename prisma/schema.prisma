@@ -21,7 +21,7 @@ model Course {
   isPublished Boolean @default(false)
 
   teacherId String
-  users User[]
+
 
   categoryId String 
   category  Category @relation(fields: [categoryId],references: [id])
@@ -31,11 +31,15 @@ model Course {
 
   chapters Chapter[]
 
+
+  purchases Purchase[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
   @@index([subCategoryId])
+ 
 }
 
 model Category{
@@ -117,12 +121,26 @@ model Attachment {
   @@index([topicId])
 
 }
-model User{
+
+model Purchase {
+  id String @id @default(uuid())
+  userId String
+
+  courseId String
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model StripeCustomer {
   id String @id @default(uuid())
   userId String @unique
+  stripeCustomerId String @unique
 
-  courseId String 
-  course Course @relation(fields:[courseId],references: [id])
-
-  @@index([courseId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
