@@ -21,23 +21,17 @@ type CourseWithCategories = Course & {
 } & {
   subcategory: SubCategory;
 } & {
-  chapter: Chapter;
+  chapters: Chapter[];
+} & {
+  topic: Topic[];
 };
 
 const Page = ({ params }: { params: ParamsPage }) => {
   const [course, setCourse] = useState<CourseWithCategories>();
-  const [videoUrl, setVideoUrl] = useState<string>();
+  const [videoUrl, setVideoUrl] = useState<Topic>();
+  const [paidStatus, setPaidStatus] = useState(false);
+
   const router = useRouter();
-
-  const checkout = async () => {
-    const res = await fetch(`/api/course/${course?.id}/checkout`);
-
-    if (res.ok) {
-      const data = await res.json();
-
-      router.push(data.url);
-    }
-  };
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -49,11 +43,71 @@ const Page = ({ params }: { params: ParamsPage }) => {
 
         setCourse(data);
         //@ts-ignore
-        setVideoUrl(data.chapters[0].topic[0].videoUrl);
+        setVideoUrl(data.chapters[0].topic[0]);
       }
     };
+
+    const fetchPaidStatus = async () => {
+      //@ts-ignore
+      const res = await fetch(`/api/course/${params.courseId}/user`);
+
+      if (res.status === 200) {
+        setPaidStatus(true);
+      }
+
+      if (res.status === 401) {
+        setPaidStatus(false);
+      }
+    };
+
     fetchCourse();
+    fetchPaidStatus();
   }, [params]);
+
+  const checkout = async () => {
+    const res = await fetch(`/api/course/${course?.id}/checkout`);
+
+    if (res.ok) {
+      const data = await res.json();
+
+      router.push(data.url);
+    }
+  };
+
+  const playNext = async () => {
+    //@ts-ignore
+    let chapterIndex = course?.chapters.findIndex((chap) =>
+      //@ts-ignore
+      chap.topic.find((topic) => videoUrl.id === topic.id)
+    );
+
+    //@ts-ignore
+    let topicsLength = course?.chapters[chapterIndex].topic.length;
+
+    //@ts-ignore
+    let topicIndex = course?.chapters[chapterIndex].topic.findIndex(
+      (topic: Topic) => topic.id === videoUrl!.id
+    );
+
+    topicIndex = topicIndex + 1;
+    console.log(chapterIndex, topicsLength, topicIndex);
+
+    // if (!paidStatus) {
+    //   return;
+    // }
+
+    if (topicIndex >= topicsLength) {
+      return;
+    } else {
+      //SAVE USER PROGRESS
+      const res = await fetch(`/api/course/${course?.id}/user`);
+
+      if (res.ok) {
+        //@ts-ignore
+        setVideoUrl(course?.chapters[chapterIndex].topic[topicIndex]);
+      }
+    }
+  };
 
   return (
     <>
@@ -63,7 +117,7 @@ const Page = ({ params }: { params: ParamsPage }) => {
       ) : (
         <div className="flex">
           <div className="w-full md:w-[70%] pl-8">
-            <CourseMediaPlayer url={videoUrl!} />
+            <CourseMediaPlayer topic={videoUrl!} playNext={playNext} />
             <h1 className="font-semibold text-2xl mt-4">{course.title}</h1>
             <div className="p-4 w-full">
               <CourseAccordion desc={course.description} />
@@ -107,18 +161,22 @@ const Page = ({ params }: { params: ParamsPage }) => {
               </div>
             </div>
             <div className="p-4 w-1/2">
-              <div className="flex justify-end gap-4 ">
-                <Button type="submit" onClick={checkout}>
+              <div className="flex w-full gap-4 ">
+                <Button type="submit" onClick={checkout} className="w-full">
                   Enroll Now @{course.price}
                 </Button>
               </div>
             </div>
           </div>
           {/* @ts-ignore */}
-          <TopicsMenu chapters={course.chapters} />
+          <TopicsMenu chapters={course.chapters} setVideoUrl={setVideoUrl} />
           <div className="fixed bottom-0 top-0 right-0 w-[30%] bg-purple-500 shadow-md hidden md:block">
-            {/* @ts-ignore */}
-            <MediaTopics chapters={course.chapters} />
+            <MediaTopics
+              //@ts-ignore
+              chapters={course.chapters}
+              setVideoUrl={setVideoUrl}
+              userStatus={paidStatus}
+            />
           </div>
         </div>
       )}

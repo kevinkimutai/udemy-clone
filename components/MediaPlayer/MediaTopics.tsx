@@ -12,10 +12,11 @@ type ChapterWithTopics = Chapter & {
 
 type ComponentProps = {
   chapters: ChapterWithTopics[];
+  setVideoUrl: React.Dispatch<React.SetStateAction<Topic | undefined>>;
+  userStatus: boolean;
 };
 
-const MediaTopics = ({ chapters }: ComponentProps) => {
-  console.log("CHAPTERS", chapters);
+const MediaTopics = ({ chapters, setVideoUrl, userStatus }: ComponentProps) => {
   return (
     <>
       <h2 className="p-2 font-semibold text-lg w-full bg-white text-center">
@@ -23,7 +24,12 @@ const MediaTopics = ({ chapters }: ComponentProps) => {
       </h2>
       {chapters.map((chap: ChapterWithTopics) => (
         <>
-          <MediaChapters chapter={chap} key={chap.id} />
+          <MediaChapters
+            chapter={chap}
+            key={chap.id}
+            setVideoUrl={setVideoUrl}
+            userStatus={userStatus}
+          />
         </>
       ))}
     </>

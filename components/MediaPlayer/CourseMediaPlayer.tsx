@@ -1,22 +1,25 @@
 "use client";
 
+import { Topic } from "@prisma/client";
 import React, { Component } from "react";
 
 import ReactPlayer from "react-player";
 
 type ComponentProps = {
-  url: string;
+  topic: Topic;
+  playNext: () => void;
 };
 
-const CourseMediaPlayer = ({ url }: ComponentProps) => {
+const CourseMediaPlayer = ({ topic, playNext }: ComponentProps) => {
   return (
     <div>
       <ReactPlayer
         className="react-player"
-        url={url}
+        url={topic.videoUrl}
         width="100%"
         height="100%"
         controls
+        onEnded={playNext}
       />
     </div>
   );

@@ -128,10 +128,12 @@ const TopicAttachment = ({ onBack, submitForm }: FormProps) => {
   };
 
   const submitHandler = (data: any) => {
+    let attachment;
+
     if (!uploadURL) {
-      return;
+      attachment = { attachment: null };
     }
-    let attachment = { attachment: { name: data.name, url: uploadURL } };
+    attachment = { attachment: { name: data.name, url: uploadURL } };
 
     submitForm(attachment);
   };

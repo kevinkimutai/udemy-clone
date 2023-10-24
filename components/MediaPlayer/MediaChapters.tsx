@@ -15,9 +15,11 @@ type ChapterProps = {
       attachment: Attachment[];
     };
   };
+  setVideoUrl: React.Dispatch<React.SetStateAction<Topic | undefined>>;
+  userStatus: boolean;
 };
 
-const MediaChapters = ({ chapter }: ChapterProps) => {
+const MediaChapters = ({ chapter, setVideoUrl, userStatus }: ChapterProps) => {
   return (
     <div className="px-4 mb-2 bg-white">
       <Accordion type="single" collapsible className="">
@@ -26,7 +28,11 @@ const MediaChapters = ({ chapter }: ChapterProps) => {
             {chapter?.number}.{chapter?.name}
           </AccordionTrigger>
           <AccordionContent>
-            <MediaTopicsTable topics={chapter!.topic} />
+            <MediaTopicsTable
+              topics={chapter!.topic}
+              setVideoUrl={setVideoUrl}
+              userStatus={userStatus}
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

@@ -14,6 +14,7 @@ export async function POST(req: Request) {
       await req.json();
 
     const topic = await db.topic.create({
+      //@ts-ignore
       data: {
         name,
         number,
@@ -22,7 +23,6 @@ export async function POST(req: Request) {
         attachment: {
           create: [{ name: attachment.name, url: attachment.url }],
         },
-        chapterId,
         chapter: {
           connect: {
             id: chapterId,

@@ -48,9 +48,19 @@ const CourseTopicModal = ({ isOpen, onClose, chapterId }: ModalProps) => {
       } else {
         bool = false;
       }
+
+      let attachment;
+
+      if (!formData?.attachment.name || !formData.attachment.url) {
+        attachment = { name: "", url: "" };
+      } else {
+        attachment = formData.attachment;
+      }
+
       let topicData = {
         ...formData,
         number: +formData!.number,
+        attachment,
         isFree: bool,
         chapterId,
       };

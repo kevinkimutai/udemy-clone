@@ -74,7 +74,7 @@ const CategoryForm = ({ submitForm, onBack }: CategoryProps) => {
             );
 
             console.log(filteredIcons);
-            const Icon = filteredIcons.icon;
+            // const Icon = filteredIcons.icon;
 
             return (
               <Card
@@ -88,7 +88,7 @@ const CategoryForm = ({ submitForm, onBack }: CategoryProps) => {
               >
                 <CardContent>
                   <div className="flex flex-col justify-center items-center my-auto">
-                    <Icon className="text-slate-500 mb-2" />
+                    {/* <Icon className="text-slate-500 mb-2" /> */}
                     {cat.name}
                   </div>
                 </CardContent>
