@@ -1,6 +1,6 @@
 "use client";
 
-import { Attachment, Topic } from "@prisma/client";
+import { Attachment, Topic, UserProgress } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -32,12 +32,16 @@ type MediaTopicsProps = {
   userStatus: boolean;
 };
 
+type ProgressUser = UserProgress & {
+  topic: Topic[];
+};
+
 const MediaTopicsTable = ({
   topics,
   setVideoUrl,
   userStatus,
 }: MediaTopicsProps) => {
-  const [progress, setProgress] = useState();
+  const [progress, setProgress] = useState<ProgressUser[]>();
 
   useEffect(() => {
     const fetchUserProgress = async () => {
@@ -49,8 +53,6 @@ const MediaTopicsTable = ({
 
     fetchUserProgress();
   }, []);
-
-  console.log(progress);
 
   return (
     <>
@@ -72,13 +74,13 @@ const MediaTopicsTable = ({
                       <TableCell>
                         <Checkbox
                           checked={
-                            false
-                            //@ts-ignore
-                            // progress!.topicsCovered.find(
-                            //   (top: Topic) => top.id === topic.id
-                            // )
-                            //   ? true
-                            //   : false
+                            progress.find((user) =>
+                              user.topic.find(
+                                (top: Topic) => top.id === topic.id
+                              )
+                            )
+                              ? true
+                              : false
                           }
                         />
                       </TableCell>

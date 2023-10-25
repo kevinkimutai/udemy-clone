@@ -14,10 +14,10 @@ export async function GET(req: Request) {
 
     const progress = await db.userProgress.findMany({
       where: { userId: user.id },
-      include: { topicsCovered: true },
+      include: { topic: true },
     });
 
-    console.log("PROGRESS", progress);
+    console.log("PROGRESS", progress[0].topic);
 
     return NextResponse.json(progress);
   } catch (error) {
@@ -25,35 +25,3 @@ export async function GET(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
-// export async function GET(
-//   req: Request,
-//   { params }: { params: { topicId: string } }
-// ) {
-//   try {
-//     const topic = await db.topic.findUnique({
-//       where: { id: params.topicId },
-//     });
-
-//     //GEt User
-
-//     const user = await currentUser();
-
-//     if (!user) {
-//       return new NextResponse("Unauthenticated,Please Log In", {
-//         status: 401,
-//       });
-//     }
-
-//     //check user progress exists
-//     const userProgress = await db.userProgress.findMany({
-//       where: { userId: user.id },
-//       include: { topicsCovered: true },
-//     });
-
-//     return NextResponse.json(userProgress);
-//   } catch (error) {
-//     console.log("[TOPICUSERPROGRESS GET]", error);
-//     return new NextResponse("Internal Error", { status: 500 });
-//   }
-// }

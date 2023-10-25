@@ -96,8 +96,7 @@ model Topic{
   chapterId String 
   chapter  Chapter @relation(fields: [chapterId],references: [id],onDelete: Cascade)
 
-  userProgressId String?
-  userProgress UserProgress?  @relation(fields: [userProgressId], references: [id], onDelete: Cascade)
+  userProgress UserProgress[]  
 
   attachment Attachment[]
 
@@ -106,7 +105,7 @@ model Topic{
 
   @@index([id])
   @@index([chapterId])
-  @@index([userProgressId])
+
 
 }
 
@@ -153,9 +152,10 @@ model UserProgress {
   id String @id @default(uuid())
   userId String @unique
 
-  topicsCovered Topic[]
+  topic   Topic[] 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
 
 }

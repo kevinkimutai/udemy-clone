@@ -40,19 +40,20 @@ const page = async ({ params }: { params: ParamsPage }) => {
   return (
     <>
       {/* <CourseDetails course={course} /> */}
-      <h1 className="font-semibold text-2xl">{course.title}</h1>
-      <div className="p-4 flex flex-wrap gap-4">
-        <div className="flex justify-between items-start bg-purple-100 rounded-2xl p-4 w-[15rem]">
+      <h1 className="font-semibold text-2xl px-2 sm:px-4">{course.title}</h1>
+      <div className="px-2 sm:px-4 py-4 flex flex-wrap gap-2 sm:gap-4">
+        <div className="flex justify-between items-start bg-purple-100 rounded-2xl p-4 w-[10rem] sm:[12rem] md:w-[15rem]">
           <div className="rounded-3xl bg-yellow-300">
             <Users size={55} className="p-2 text-white" />
           </div>
           <div className="flex flex-col items-end">
+            {/* TODO:CALCULATE NO OF STUDENTS */}
             <h2 className="font-semibold">Students</h2>
             <p className="font-semibold text-xl">48</p>
           </div>
         </div>
 
-        <div className="flex justify-between items-start bg-purple-100 rounded-2xl p-4 w-[15rem]">
+        <div className="flex justify-between items-start bg-purple-100 rounded-2xl p-4 w-[10rem] sm:[12rem] md:w-[15rem]">
           <div className="rounded-3xl bg-emerald-300">
             <Receipt size={55} className="p-2 text-white" />
           </div>
@@ -63,7 +64,7 @@ const page = async ({ params }: { params: ParamsPage }) => {
         </div>
       </div>
 
-      <div className="p-4 w-1/2">
+      <div className="p-4 w-full sm:w-2/3 lg:w-1/2">
         <div className="flex  items-center">
           <p className="w-1/2 flex justify-start items-center">
             <DollarSignIcon size={15} />:<span className="ml-2">Price</span>
@@ -71,7 +72,7 @@ const page = async ({ params }: { params: ParamsPage }) => {
           <p className="w-1/2 font-semibold">{course.price}</p>
         </div>
       </div>
-      <div className="p-4 w-1/2">
+      <div className="p-4 w-full sm:w-2/3 lg:w-1/2">
         <div className="flex  items-center">
           <p className="w-1/2 flex justify-start items-center">
             <Braces size={15} />:<span className="ml-2">Category</span>
@@ -79,7 +80,7 @@ const page = async ({ params }: { params: ParamsPage }) => {
           <p className="w-1/2 font-semibold">{course.category.name}</p>
         </div>
       </div>
-      <div className="p-4 w-1/2">
+      <div className="p-4 w-full sm:w-2/3 lg:w-1/2">
         <div className="flex  items-center">
           <p className="w-1/2 flex justify-start items-center">
             <CalendarDays size={15} />:<span className="ml-2">Created</span>
@@ -87,13 +88,20 @@ const page = async ({ params }: { params: ParamsPage }) => {
           <p className="w-1/2 font-semibold">{formatDate(course.createdAt)}</p>
         </div>
       </div>
-
-      <div className="p-4 w-1/2">
-        <div className="flex justify-end gap-4 ">
-          <Button variant={"outline"}>Edit</Button>
-          <Button type="submit">Publish</Button>
+      {!course.isPublished ? (
+        <div className="p-4 w-full sm:w-2/3 lg:w-1/2">
+          <div className="flex justify-end gap-4 ">
+            <Button variant={"outline"}>Edit</Button>
+            <Button type="submit">Publish</Button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="p-4 w-full sm:w-2/3 lg:w-1/2">
+          <div className="flex justify-end gap-4 ">
+            <Button className="px-4">Edit</Button>
+          </div>
+        </div>
+      )}
 
       <div className="p-4 w-2/3">
         <CourseAccordion desc={course.description} />

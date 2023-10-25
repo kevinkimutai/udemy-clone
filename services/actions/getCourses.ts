@@ -35,8 +35,6 @@ export async function getCourses(params: IListingsParams) {
         createdAt: "desc",
       },
     });
-
-    console.log(courses);
     return courses;
   } catch (error: any) {
     throw new Error(error);

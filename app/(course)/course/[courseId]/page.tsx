@@ -11,6 +11,9 @@ import { formatDate } from "@/utils/formatDate";
 import { Button } from "@/components/ui/button";
 import MediaTopics from "@/components/MediaPlayer/MediaTopics";
 import TopicsMenu from "@/components/MediaPlayer/TopicsMenu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
+import LogoImage from "../../../../public/images/Udemy_logo.svg.png";
 
 type ParamsPage = {
   courseId: string;
@@ -28,7 +31,7 @@ type CourseWithCategories = Course & {
 
 const Page = ({ params }: { params: ParamsPage }) => {
   const [course, setCourse] = useState<CourseWithCategories>();
-  const [videoUrl, setVideoUrl] = useState<Topic>();
+  const [videoUrl, setVideoUrl] = useState<Topic | undefined>();
   const [paidStatus, setPaidStatus] = useState(false);
 
   const router = useRouter();
@@ -43,7 +46,11 @@ const Page = ({ params }: { params: ParamsPage }) => {
 
         setCourse(data);
         //@ts-ignore
-        setVideoUrl(data.chapters[0].topic[0]);
+        if (!data.chapters[0].topic[0].isFree) {
+          setVideoUrl(undefined);
+        } else {
+          setVideoUrl(data.chapters[0].topic[0]);
+        }
       }
     };
 
@@ -75,6 +82,10 @@ const Page = ({ params }: { params: ParamsPage }) => {
   };
 
   const playNext = async () => {
+    if (!paidStatus) {
+      return;
+    }
+
     //@ts-ignore
     let chapterIndex = course?.chapters.findIndex((chap) =>
       //@ts-ignore
@@ -90,17 +101,20 @@ const Page = ({ params }: { params: ParamsPage }) => {
     );
 
     topicIndex = topicIndex + 1;
-    console.log(chapterIndex, topicsLength, topicIndex);
 
     // if (!paidStatus) {
     //   return;
     // }
 
     if (topicIndex >= topicsLength) {
-      return;
+      //SAVE USER PROGRESS
+      const res = await fetch(`/api/topic/${videoUrl?.id}/user`);
+      if (res.ok) {
+        return;
+      }
     } else {
       //SAVE USER PROGRESS
-      const res = await fetch(`/api/course/${course?.id}/user`);
+      const res = await fetch(`/api/topic/${videoUrl?.id}/user`);
 
       if (res.ok) {
         //@ts-ignore
@@ -162,21 +176,36 @@ const Page = ({ params }: { params: ParamsPage }) => {
             </div>
             <div className="p-4 w-1/2">
               <div className="flex w-full gap-4 ">
-                <Button type="submit" onClick={checkout} className="w-full">
-                  Enroll Now @{course.price}
-                </Button>
+                {paidStatus ? (
+                  <p className="px-4 py-2 bg-black text-white rounded-md">
+                    Already Bought
+                  </p>
+                ) : (
+                  <Button type="submit" onClick={checkout} className="w-full">
+                    Enroll Now @{course.price}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
           {/* @ts-ignore */}
           <TopicsMenu chapters={course.chapters} setVideoUrl={setVideoUrl} />
           <div className="fixed bottom-0 top-0 right-0 w-[30%] bg-purple-500 shadow-md hidden md:block">
-            <MediaTopics
-              //@ts-ignore
-              chapters={course.chapters}
-              setVideoUrl={setVideoUrl}
-              userStatus={paidStatus}
-            />
+            <ScrollArea className="h-[95vh] w-full">
+              <MediaTopics
+                //@ts-ignore
+                chapters={course.chapters}
+                setVideoUrl={setVideoUrl}
+                userStatus={paidStatus}
+              />
+            </ScrollArea>
+            <div className="flex justify-center items-center">
+              <Image
+                src={LogoImage}
+                alt="Logo"
+                className="w-16 hidden md:block object-contain"
+              />
+            </div>
           </div>
         </div>
       )}

@@ -22,7 +22,6 @@ export async function GET(
       },
     });
 
-    console.log(course);
     return NextResponse.json(course);
   } catch (error) {
     console.log("[COURSEID POST]", error);
